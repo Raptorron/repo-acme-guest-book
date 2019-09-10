@@ -19,14 +19,15 @@ const readFileJSON = async (file) => {
 }
 
 const server = http.createServer( async (req, res) => {
+  res.setHeader('Access-Control-Allow-Headers', req.headers.origin);
   try{
     if(req.url === '/'){
       const html = await readFile('./index.html')
       res.write(html);
       res.end();
     }
-    else if (req.url === './api/guest'){
-      const users = await readFileJSON('./users.json')
+    else if (req.url === '/api/guest'){
+      const users = await readFileJSON('./guest.json')
       res.write(JSON.stringify(users));
       res.end()
     }

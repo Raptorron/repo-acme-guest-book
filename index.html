@@ -11,10 +11,38 @@
     </style>
   </head>
   <body>
-    <h1>hello</h1>
     <div id="root" ></div>
-    <script>
+    <script type="text/babel">
+      const { render } = ReactDOM;
+      const { createElement, Component } = React;
+      const { Route, HashRouter, NavLink, Redirect, Switch } = ReactRouterDOM;
+      const root = document.querySelector('#root');
 
+      class App extends Component{
+        constructor(){
+          super();
+          this.state={
+            users: []
+          }
+        }
+        async componentDidMount(){
+          const users = (await axios.get('http://localhost:3001/api/guest')).data;
+          this.setState({users})
+        }
+
+        render(){
+          const {users} = this.state;
+          return (
+              <ul>
+                {
+                  users.map( user => <li key={user.id}>{user.name}</li>)
+                }
+              </ul>
+          )
+        }
+      }
+
+      render(<App />, root)
     </script>
   </body>
 </html>
